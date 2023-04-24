@@ -1,6 +1,7 @@
 import express from 'express';
-import clipboard from 'clipboardy';
+import clipboardy from 'clipboardy';
 import fs from 'fs';
+
 const app = express();
 const port = 3000;
 
@@ -9,10 +10,11 @@ app.get('/load/:file', async (req, res) => {
   const filePath = `./${fileName}.txt`;
   try {
     const textToCopy = fs.readFileSync(filePath, 'utf-8');
-    clipboard.writeSync(textToCopy);
-    res.send(`Error Loading Java Compiler`);
+    clipboardy.writeSync(textToCopy);
+    res.send(`File '${fileName}.txt' loaded and copied to clipboard`);
   } catch (err) {
-    res.send(`Error Loading Java Compiler`);
+    console.error(err);
+    res.status(500).send('Error loading file');
   }
 });
 
